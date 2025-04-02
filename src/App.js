@@ -10,7 +10,7 @@ function App() {
   const {tg} = useTelegram();
   useEffect(() => {
     tg.ready();
-  }, []);
+  }, [tg]);
   return (
     <div className="App">
       <Field/>
