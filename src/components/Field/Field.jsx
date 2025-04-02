@@ -19,7 +19,7 @@ export default function Field() {
             text: `Your count: ${playerCount}`
         })
         WebAppMainButton.show();
-    }, [playerCount, WebAppMainButton]);
+    });
 
     return (
         <div className={classes.wrap}>
