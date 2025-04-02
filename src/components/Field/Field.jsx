@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 import useGame from '../../hooks/useGame';
 // import useTelegram from '../../hooks/useTelegram';
@@ -13,6 +13,11 @@ export default function Field() {
             bot,
             player,
             onMove } = useGame();
+    useEffect(() => {
+        const tg = window.Telegram.WebApp;
+        tg.MainButton.setText("Play Game");
+        tg.MainButton.show();
+    }, []);
     return (
         <div className={classes.wrap}>
             <h1 className={classes.title}>Paper Scissors Stone</h1>
