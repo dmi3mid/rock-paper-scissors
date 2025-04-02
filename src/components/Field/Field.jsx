@@ -29,7 +29,7 @@ export default function Field() {
 
     const onSendData = useCallback(() => {
         tg.sendData(JSON.stringify({playerCount}));
-    }, [tg, playerCount, userInfo]);
+    }, [tg, playerCount]);
     
     useEffect(() => {
         tg.onEvent('mainButtonClicked', onSendData);
