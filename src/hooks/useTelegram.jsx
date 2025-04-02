@@ -9,6 +9,7 @@ export default function useTelegram() {
         onClose,
         tg,
         user: tg.initDataUnsafe?.user,
+        chat: tg.initDataUnsafe?.chat,
         WebAppMainButton: tg.MainButton,
     }
 }
