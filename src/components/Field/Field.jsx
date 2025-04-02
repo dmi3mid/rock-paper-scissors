@@ -13,7 +13,7 @@ export default function Field() {
             bot,
             player,
             onMove } = useGame();
-    const {tg, WebAppMainButton} = useTelegram();
+    const {tg, user, WebAppMainButton} = useTelegram();
     
     useEffect(() => {
         WebAppMainButton.setText(`Your count: ${playerCount}`);
@@ -21,8 +21,8 @@ export default function Field() {
     }, [WebAppMainButton, playerCount]);
 
     const onSendData = useCallback(() => {
-        tg.sendData(JSON.stringify({playerCount}));
-    }, [tg, playerCount]);
+        tg.sendData(JSON.stringify({playerCount, user}));
+    }, [tg, user, playerCount]);
     
     useEffect(() => {
         tg.onEvent('mainButtonClicked', onSendData);
