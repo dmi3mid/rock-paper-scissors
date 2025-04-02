@@ -14,18 +14,11 @@ export default function Field() {
             player,
             onMove } = useGame();
     const {WebAppMainButton} = useTelegram();
-
     useEffect(() => {
-        if (WebAppMainButton?.setParams) {
-            WebAppMainButton.setParams({
-                text: `Your count: ${playerCount}`
-            });
-            WebAppMainButton.show();
-        }
-        // WebAppMainButton.setParams({
-        //     text: `Your count: ${playerCount}`
-        // })
-        // WebAppMainButton.show();
+        WebAppMainButton.setParams({
+            text: `Your count: ${playerCount}`
+        })
+        WebAppMainButton.show();
     }, [playerCount, WebAppMainButton]);
 
     return (
