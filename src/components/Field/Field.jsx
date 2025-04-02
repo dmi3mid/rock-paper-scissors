@@ -15,8 +15,9 @@ export default function Field() {
             onMove } = useGame();
     useEffect(() => {
         const tg = window.Telegram?.WebApp;
+        console.log(tg);
         if (tg) {
-            tg.ready(); // Гарантує, що WebApp повністю завантажений
+            tg.ready();
             tg.MainButton.setText("Play Game");
             tg.MainButton.show();
         }
