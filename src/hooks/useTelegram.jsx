@@ -8,7 +8,8 @@ export default function useTelegram() {
     return {
         onClose,
         tg,
-        user: tg?.initDataUnsafe?.user,
+        // user: tg?.initDataUnsafe?.user,
+        user: tg?.initData,
         WebAppMainButton: tg?.MainButton,
     }
 }
