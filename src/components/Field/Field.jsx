@@ -15,7 +15,7 @@ export default function Field() {
             onMove } = useGame();
     const {tg, WebAppMainButton} = useTelegram();
     
-    useCallback(() => {
+    useEffect(() => {
         WebAppMainButton.setText(`Your count: ${playerCount}`);
         WebAppMainButton.show();
     }, [WebAppMainButton, playerCount]);
