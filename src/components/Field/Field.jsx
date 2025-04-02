@@ -1,11 +1,10 @@
-import React from 'react';
-import axios from 'axios';
+import React, {useEffect, useCallback} from 'react';
 
 import useGame from '../../hooks/useGame';
 import useTelegram from '../../hooks/useTelegram';
 
 import Button from '../UI/Button/Button';
-import SendDataButton from '../UI/Button/SendDataButton';
+
 
 import classes from './Field.module.css';
 
@@ -15,36 +14,27 @@ export default function Field() {
             bot,
             player,
             onMove } = useGame();
-    const {user} = useTelegram();
+    const {tg, WebAppMainButton} = useTelegram();
+    
+    useEffect(() => {
+        WebAppMainButton.setText(`Your count: ${playerCount}`);
+        WebAppMainButton.show();
+    }, [WebAppMainButton, playerCount]);
+ 
+    const onSendData = useCallback(() => {
+        tg.sendData(JSON.stringify({playerCount}));
+    }, [tg, playerCount]);
 
-
-    // useEffect(() => {
-    //     WebAppMainButton.setText(`Your count: ${playerCount}`);
-    //     WebAppMainButton.show();
-    // }, [WebAppMainButton, playerCount]);
-
-
-    const onSendData = async () => {
-        const url = "http://localhost:2800/countPlayer";
-        try {
-            const response = await axios.post(url, user);
-            console.log('Response:', response.data);
-        } catch (error) {
-            console.error('Error:', error.response?.data || error.message);
+    useEffect(() => {
+        tg.onEvent('mainButtonClicked', onSendData);
+        return () => {
+            tg.offEvent('mainButtonClicked', onSendData);
         }
-    };
-
-
-    // useEffect(() => {
-    //     tg.onEvent('mainButtonClicked', onSendData);
-    //     return () => {
-    //         tg.offEvent('mainButtonClicked', onSendData);
-    //     }
-    // }, [tg, onSendData]);
+    }, [tg, onSendData]);
 
     return (
         <div className={classes.wrap}>
-            <h1 className={classes.title}>Paper Scissors Stone {user?.username}</h1>
+            <h1 className={classes.title}>Paper Scissors Stone</h1>
             <div className={classes.playfield}>
                 <div className={classes.player}>
                     <p className={classes.counter}>{botCount}</p>
@@ -65,9 +55,6 @@ export default function Field() {
                 <Button onMove={onMove} playerMove="Shears">
                     <img className={classes.buttonImg} src={require("../../images/Shears.webp")} alt="" />
                 </Button>
-                <SendDataButton onSendData={onSendData}>
-                    <img className={classes.buttonImg} src={require("../../images/Door.webp")} alt="" />
-                </SendDataButton>
             </div>
         </div>
     )
