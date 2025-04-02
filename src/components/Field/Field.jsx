@@ -14,9 +14,12 @@ export default function Field() {
             player,
             onMove } = useGame();
     useEffect(() => {
-        const tg = window.Telegram.WebApp;
-        tg.MainButton.setText("Play Game");
-        tg.MainButton.show();
+        const tg = window.Telegram?.WebApp;
+        if (tg) {
+            tg.ready(); // Гарантує, що WebApp повністю завантажений
+            tg.MainButton.setText("Play Game");
+            tg.MainButton.show();
+        }
     }, []);
     return (
         <div className={classes.wrap}>
