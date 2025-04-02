@@ -1,11 +1,11 @@
-import React, {useCallback, useEffect} from 'react';
+import React from 'react';
 import axios from 'axios';
 
 import useGame from '../../hooks/useGame';
 import useTelegram from '../../hooks/useTelegram';
 
 import Button from '../UI/Button/Button';
-// import SendDataButton from '../UI/Button/SendDataButton';
+import SendDataButton from '../UI/Button/SendDataButton';
 
 import classes from './Field.module.css';
 
@@ -15,16 +15,16 @@ export default function Field() {
             bot,
             player,
             onMove } = useGame();
-    const {tg, user, WebAppMainButton} = useTelegram();
+    const {user} = useTelegram();
 
 
-    useEffect(() => {
-        WebAppMainButton.setText(`Your count: ${playerCount}`);
-        WebAppMainButton.show();
-    }, [WebAppMainButton, playerCount]);
+    // useEffect(() => {
+    //     WebAppMainButton.setText(`Your count: ${playerCount}`);
+    //     WebAppMainButton.show();
+    // }, [WebAppMainButton, playerCount]);
 
 
-    const onSendData = useCallback(async () => {
+    const onSendData = async () => {
         const url = "http://localhost:2800/countPlayer";
         try {
             const response = await axios.post(url, user);
@@ -32,15 +32,15 @@ export default function Field() {
         } catch (error) {
             console.error('Error:', error.response?.data || error.message);
         }
-    }, [user]);
+    };
 
 
-    useEffect(() => {
-        tg.onEvent('mainButtonClicked', onSendData);
-        return () => {
-            tg.offEvent('mainButtonClicked', onSendData);
-        }
-    }, [tg, onSendData]);
+    // useEffect(() => {
+    //     tg.onEvent('mainButtonClicked', onSendData);
+    //     return () => {
+    //         tg.offEvent('mainButtonClicked', onSendData);
+    //     }
+    // }, [tg, onSendData]);
 
     return (
         <div className={classes.wrap}>
@@ -65,9 +65,9 @@ export default function Field() {
                 <Button onMove={onMove} playerMove="Shears">
                     <img className={classes.buttonImg} src={require("../../images/Shears.webp")} alt="" />
                 </Button>
-                {/* <SendDataButton onSendData={onSendData}>
+                <SendDataButton onSendData={onSendData}>
                     <img className={classes.buttonImg} src={require("../../images/Door.webp")} alt="" />
-                </SendDataButton> */}
+                </SendDataButton>
             </div>
         </div>
     )
