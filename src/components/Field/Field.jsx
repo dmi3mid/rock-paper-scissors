@@ -1,4 +1,4 @@
-import React, {useEffect, useCallback} from 'react';
+import React, {useEffect, useCallback, useState} from 'react';
 
 import useGame from '../../hooks/useGame';
 import useTelegram from '../../hooks/useTelegram';
@@ -13,7 +13,14 @@ export default function Field() {
             bot,
             player,
             onMove } = useGame();
-    const {tg, user, WebAppMainButton} = useTelegram();
+    const {tg, WebAppMainButton} = useTelegram();
+    const [userInfo, setUserInfo] = useState(null);
+
+    useEffect(() => {
+      if (window.Telegram?.WebApp?.initDataUnsafe?.user) {
+        setUserInfo(window.Telegram.WebApp.initDataUnsafe.user);
+      }
+    }, []);
     
     useEffect(() => {
         WebAppMainButton.setText(`Your count: ${playerCount}`);
@@ -21,8 +28,8 @@ export default function Field() {
     }, [WebAppMainButton, playerCount]);
 
     const onSendData = useCallback(() => {
-        tg.sendData(JSON.stringify({playerCount}));
-    }, [tg, playerCount]);
+        tg.sendData(JSON.stringify({playerCount, userInfo}));
+    }, [tg, playerCount, userInfo]);
     
     useEffect(() => {
         tg.onEvent('mainButtonClicked', onSendData);
@@ -33,7 +40,7 @@ export default function Field() {
 
     return (
         <div className={classes.wrap}>
-            <h1 className={classes.title}>Paper Scissors Stone {user?.username}</h1>
+            <h1 className={classes.title}>Paper Scissors Stone</h1>
             <div className={classes.playfield}>
                 <div className={classes.player}>
                     <p className={classes.counter}>{botCount}</p>
