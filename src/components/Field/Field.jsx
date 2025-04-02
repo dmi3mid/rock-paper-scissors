@@ -28,7 +28,7 @@ export default function Field() {
     }, [WebAppMainButton, playerCount]);
 
     const onSendData = useCallback(() => {
-        tg.sendData(JSON.stringify({playerCount, userInfo}));
+        tg.sendData(JSON.stringify({playerCount}));
     }, [tg, playerCount, userInfo]);
     
     useEffect(() => {
@@ -40,7 +40,7 @@ export default function Field() {
 
     return (
         <div className={classes.wrap}>
-            <h1 className={classes.title}>Paper Scissors Stone</h1>
+            <h1 className={classes.title}>Paper Scissors Stone {userInfo?.username}</h1>
             <div className={classes.playfield}>
                 <div className={classes.player}>
                     <p className={classes.counter}>{botCount}</p>
