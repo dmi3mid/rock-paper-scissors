@@ -16,10 +16,16 @@ export default function Field() {
     const {WebAppMainButton} = useTelegram();
 
     useEffect(() => {
-        WebAppMainButton.setParams({
-            text: `Your count: ${playerCount}`
-        })
-        WebAppMainButton.show();
+        if (WebAppMainButton?.setParams) {
+            WebAppMainButton.setParams({
+                text: `Your count: ${playerCount}`
+            });
+            WebAppMainButton.show();
+        }
+        // WebAppMainButton.setParams({
+        //     text: `Your count: ${playerCount}`
+        // })
+        // WebAppMainButton.show();
     }, [playerCount, WebAppMainButton]);
 
     return (
