@@ -1,7 +1,7 @@
 import React from 'react';
 
 import useGame from '../../hooks/useGame';
-// import useTelegram from '../../hooks/useTelegram';
+import useTelegram from '../../hooks/useTelegram';
 
 import Button from '../UI/Button/Button';
 
@@ -13,6 +13,9 @@ export default function Field() {
             bot,
             player,
             onMove } = useGame();
+    const {WebAppMainButton} = useTelegram();
+    WebAppMainButton.setText(`Your count: ${playerCount}`);
+    WebAppMainButton.show();
     return (
         <div className={classes.wrap}>
             <h1 className={classes.title}>Paper Scissors Stone</h1>
