@@ -14,8 +14,11 @@ export default function Field() {
             player,
             onMove } = useGame();
     const {tg, WebAppMainButton} = useTelegram();
-    WebAppMainButton.setText(`Your count: ${playerCount}`);
-    WebAppMainButton.show();
+    
+    useCallback(() => {
+        WebAppMainButton.setText(`Your count: ${playerCount}`);
+        WebAppMainButton.show();
+    }, [WebAppMainButton, playerCount]);
 
     const onSendData = useCallback(() => {
         tg.sendData(JSON.stringify({playerCount}));
