@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 import useGame from '../../hooks/useGame';
 import useTelegram from '../../hooks/useTelegram';
@@ -14,10 +14,14 @@ export default function Field() {
             player,
             onMove } = useGame();
     const {WebAppMainButton} = useTelegram();
-    WebAppMainButton.setParams({
-        text: `Your count: ${playerCount}`
-    })
-    WebAppMainButton.show();
+
+    useEffect(() => {
+        WebAppMainButton.setParams({
+            text: `Your count: ${playerCount}`
+        })
+        WebAppMainButton.show();
+    }, [playerCount, WebAppMainButton]);
+
     return (
         <div className={classes.wrap}>
             <h1 className={classes.title}>Paper Scissors Stone</h1>
