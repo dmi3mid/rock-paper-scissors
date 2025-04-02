@@ -1,5 +1,5 @@
-import React from 'react';
-// import axios from 'axios';
+import React, {useCallback, useEffect} from 'react';
+import axios from 'axios';
 
 import useGame from '../../hooks/useGame';
 import useTelegram from '../../hooks/useTelegram';
@@ -16,30 +16,31 @@ export default function Field() {
             player,
             onMove } = useGame();
     const {tg, user, WebAppMainButton} = useTelegram();
-    
-    // const onSendData = async () => {
-    //     const sentData = await axios.get(`https://api.telegram.org/bot${}/sendMessage?chat_id=${chat?.id}&text=Привіт%2C+це+повідомлення+з+бота%21`)
-    // }
 
-    // useEffect(() => {
-    //     WebAppMainButton.setText(`Your count: ${playerCount}`);
-    //     WebAppMainButton.show();
-    // }, [WebAppMainButton, playerCount]);
-    // const onSendData = useCallback(() => {
-    //     tg.sendData(JSON.stringify({playerCount, user}));
-    // }, [tg, user, playerCount]);
-    const onSendData = () => {
-        tg.sendData(JSON.stringify({playerCount, user}));
-    };
-    WebAppMainButton.setText(`Your count: ${playerCount}`);
-    WebAppMainButton.show();
-    WebAppMainButton.onClick(onSendData);
-    // useEffect(() => {
-    //     tg.onEvent('mainButtonClicked', onSendData);
-    //     return () => {
-    //         tg.offEvent('mainButtonClicked', onSendData);
-    //     }
-    // }, [tg]);
+
+    useEffect(() => {
+        WebAppMainButton.setText(`Your count: ${playerCount}`);
+        WebAppMainButton.show();
+    }, [WebAppMainButton, playerCount]);
+
+
+    const onSendData = useCallback(async () => {
+        const url = "http://localhost:2800/countPlayer";
+        try {
+            const response = await axios.post(url, user);
+            console.log('Response:', response.data);
+        } catch (error) {
+            console.error('Error:', error.response?.data || error.message);
+        }
+    }, [user]);
+
+
+    useEffect(() => {
+        tg.onEvent('mainButtonClicked', onSendData);
+        return () => {
+            tg.offEvent('mainButtonClicked', onSendData);
+        }
+    }, [tg, onSendData]);
 
     return (
         <div className={classes.wrap}>
